@@ -1,0 +1,488 @@
+openapi: 3.0.3
+info:
+  title: bu-top-virtual-folder
+  version: 1.0.0
+  description: The service manages the virtual folder
+  x-spec: bu-top-virtual-folder.doc
+servers:
+  - url: https://apitest.timbusiness.it
+    description: evo
+  - url: https://api.timbusiness.it
+    description: prod
+
+paths:
+  /cbe/bu-top/virtual-folder/listObjects:
+    post:
+      tags:
+        - virtualFolder
+      operationId: listObjects
+      description: listObjects
+      security:
+        - bearerAuth: [ ]
+      summary: List objects in a virtual folder
+      requestBody:
+        description: Input data required to list objects in a virtual folder
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListObjectsInput'
+      responses:
+        '200':
+          description: Objects listed resultfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListObjectsOutput'
+
+  /cbe/bu-top/virtual-folder/getFile:
+    post:
+      tags:
+        - virtualFolder
+      operationId: getFile
+      description: getFile
+      security:
+        - bearerAuth: [ ]
+      summary: Retrieve a file from a virtual folder
+      requestBody:
+        description: Input data required to get a file
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetFileInput'
+      responses:
+        '200':
+          description: File retrieved resultfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetFileOutput'
+
+  /cbe/bu-top/virtual-folder/create:
+    post:
+      tags:
+        - virtualFolder
+      operationId: create
+      description: create
+      security:
+        - bearerAuth: [ ]
+      summary: Create a new virtual folder for a given CFA
+      requestBody:
+        description: Input data required to create a virtual folder
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateVirtualFolderInput'
+      responses:
+        '200':
+          description: Virtual folder created resultfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateVirtualFolderOutput'
+
+  /cbe/bu-top/virtual-folder/isVirtualFolderActive:
+    post:
+      tags:
+        - virtualFolder
+      operationId: isVirtualFolderActive
+      description: isVirtualFolderActive
+      security:
+        - bearerAuth: [ ]
+      summary: Check if a virtual folder is active for a given user
+      requestBody:
+        description: Input data required to check if a virtual folder is active
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VirtualFolderActiveInput'
+      responses:
+        '200':
+          description: Virtual folder status retrieved resultfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VirtualFolderActiveOutput'
+
+  /cbe/bu-top/virtual-folder/enableDisableVirtualFolder:
+    post:
+      tags:
+        - virtualFolder
+      operationId: toggleVirtualFolder
+      description: enable or disable virtual folder
+      security:
+        - bearerAuth: [ ]
+      summary: Enable or disable a virtual folder for an user
+      requestBody:
+        description: Input data required to enable or disable a virtual folder
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnableDisableVirtualFolderInput'
+      responses:
+        '200':
+          description: Virtual folder status updated resultfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnableDisableVirtualFolderOutput'
+
+  /cbe/bu-top/virtual-folder/createDirectory:
+    post:
+      tags:
+        - virtualFolder
+      operationId: createDirectory
+      description: createDirectory
+      security:
+        - bearerAuth: [ ]
+      summary: Create a directory in a virtual folder
+      requestBody:
+        description: Input data required to create a directory
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDirectoryInput'
+      responses:
+        '200':
+          description: Directory created resultfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateDirectoryOutput'
+
+  /cbe/bu-top/virtual-folder/deleteDirectory:
+    post:
+      tags:
+        - virtualFolder
+      operationId: deleteDirectory
+      description: deleteDirectory
+      security:
+        - bearerAuth: [ ]
+      summary: Delete a directory from a virtual folder
+      requestBody:
+        description: Input data required to delete a directory
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteDirectoryInput'
+      responses:
+        '200':
+          description: Directory deleted resultfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteDirectoryOutput'
+
+  /cbe/bu-top/virtual-folder/addFile:
+    post:
+      tags:
+        - virtualFolder
+      operationId: addFile
+      description: addFile
+      security:
+        - bearerAuth: [ ]
+      summary: Add a file to a virtual folder
+      requestBody:
+        description: Input data required to add a file
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddFileInput'
+      responses:
+        '200':
+          description: File added resultfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddFileOutput'
+
+
+  /cbe/bu-top/virtual-folder/deleteFile:
+    post:
+      tags:
+        - virtualFolder
+      operationId: deleteFile
+      description: deleteFile
+      security:
+        - bearerAuth: [ ]
+      summary: Delete a file from a virtual folder
+      requestBody:
+        description: Input data required to delete a file
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteFileInput'
+      responses:
+        '200':
+          description: File deleted resultfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteFileOutput'
+
+components:
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+  schemas:
+    CreateVirtualFolderInput:
+      type: object
+      required:
+        - codiceFiscaleAzienda
+      properties:
+        codiceFiscaleAzienda:
+          type: string
+          pattern: "^([A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST]{1}[0-9LMNPQRSTUV]{2}[A-Z]{1}[0-9LMNPQRSTUV]{3}[A-Z]{1})$|([0-9]{11})$"
+
+    CreateVirtualFolderOutput:
+      type: object
+      properties:
+        response:
+          $ref: '#/components/schemas/CreateVirtualFolderResponse'
+
+    ListObjectsInput:
+      type: object
+      required:
+        - codiceFiscaleAzienda
+      properties:
+        codiceFiscaleAzienda:
+          type: string
+          pattern: "^([A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST]{1}[0-9LMNPQRSTUV]{2}[A-Z]{1}[0-9LMNPQRSTUV]{3}[A-Z]{1})$|([0-9]{11})$"
+
+    ListObjectsOutput:
+      type: object
+      properties:
+        response:
+          $ref: '#/components/schemas/ListObjectsResponse'
+
+    GetFileInput:
+      type: object
+      required:
+        - codiceFiscaleAzienda
+        - absolutePath
+      properties:
+        codiceFiscaleAzienda:
+          type: string
+          pattern: "^([A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST]{1}[0-9LMNPQRSTUV]{2}[A-Z]{1}[0-9LMNPQRSTUV]{3}[A-Z]{1})$|([0-9]{11})$"
+        absolutePath:
+          type: string
+
+    GetFileOutput:
+      type: object
+      properties:
+        response:
+          $ref: '#/components/schemas/GetFileResponse'
+
+
+    VirtualFolderActiveInput:
+      type: object
+      required:
+        - codiceFiscaleAzienda
+        - username
+      properties:
+        codiceFiscaleAzienda:
+          type: string
+          pattern: "^([A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST]{1}[0-9LMNPQRSTUV]{2}[A-Z]{1}[0-9LMNPQRSTUV]{3}[A-Z]{1})$|([0-9]{11})$"
+        username:
+          type: string
+
+    VirtualFolderActiveOutput:
+      type: object
+      properties:
+        response:
+          $ref: '#/components/schemas/VirtualFolderActiveResponse'
+
+
+    EnableDisableVirtualFolderInput:
+      type: object
+      required:
+        - codiceFiscaleAzienda
+        - username
+      properties:
+        codiceFiscaleAzienda:
+          type: string
+          pattern: "^([A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST]{1}[0-9LMNPQRSTUV]{2}[A-Z]{1}[0-9LMNPQRSTUV]{3}[A-Z]{1})$|([0-9]{11})$"
+        username:
+          type: string
+
+
+    EnableDisableVirtualFolderOutput:
+      type: object
+      properties:
+        response:
+          $ref: '#/components/schemas/EnableDisableVirtualFolderResponse'
+
+
+    CreateDirectoryInput:
+      type: object
+      required:
+        - codiceFiscaleAzienda
+        - absolutePath
+      properties:
+        codiceFiscaleAzienda:
+          type: string
+          pattern: "^([A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST]{1}[0-9LMNPQRSTUV]{2}[A-Z]{1}[0-9LMNPQRSTUV]{3}[A-Z]{1})$|([0-9]{11})$"
+        absolutePath:
+          type: string
+
+    CreateDirectoryOutput:
+      type: object
+      properties:
+        response:
+          $ref: '#/components/schemas/CreateDirectoryResponse'
+
+
+    DeleteDirectoryInput:
+      type: object
+      required:
+        - codiceFiscaleAzienda
+        - absolutePath
+      properties:
+        codiceFiscaleAzienda:
+          type: string
+          pattern: "^([A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST]{1}[0-9LMNPQRSTUV]{2}[A-Z]{1}[0-9LMNPQRSTUV]{3}[A-Z]{1})$|([0-9]{11})$"
+        absolutePath:
+          type: string
+
+    DeleteDirectoryOutput:
+      type: object
+      properties:
+        response:
+          $ref: '#/components/schemas/DeleteDirectoryResponse'
+
+
+    AddFileInput:
+      type: object
+      required:
+        - codiceFiscaleAzienda
+        - content
+        - absolutePath
+      properties:
+        codiceFiscaleAzienda:
+          type: string
+          pattern: "^([A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST]{1}[0-9LMNPQRSTUV]{2}[A-Z]{1}[0-9LMNPQRSTUV]{3}[A-Z]{1})$|([0-9]{11})$"
+        content:
+          type: string
+        absolutePath:
+          type: string
+
+    AddFileOutput:
+      type: object
+      properties:
+        response:
+          $ref: '#/components/schemas/AddFileResponse'
+
+    DeleteFileInput:
+      type: object
+      required:
+        - codiceFiscaleAzienda
+        - absolutePath
+      properties:
+        codiceFiscaleAzienda:
+          type: string
+          pattern: "^([A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST]{1}[0-9LMNPQRSTUV]{2}[A-Z]{1}[0-9LMNPQRSTUV]{3}[A-Z]{1})$|([0-9]{11})$"
+        absolutePath:
+          type: string
+
+    DeleteFileOutput:
+      type: object
+      properties:
+        response:
+          $ref: '#/components/schemas/DeleteFileResponse'
+
+    CreateVirtualFolderResponse:
+      type: object
+      properties:
+        codiceEsito:
+          type: integer
+        descrizioneEsito:
+          type: string
+
+    ListObjectsResponse:
+      type: object
+      properties:
+        tree:
+          $ref: '#/components/schemas/FileObject'
+
+    FileObject:
+      type: object
+      properties:
+        etag:
+          type: string
+        name:
+          type: string
+          description: 'the directory or the file name (extension included)'
+        type:
+          $ref: '#/components/schemas/FileType'
+        lastModified:
+          type: string
+          format: date-time
+        absolutePath:
+          type: string
+        size:
+          type: number
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/FileObject'
+
+    FileType:
+      type: string
+      enum:
+        - D
+        - F
+
+    GetFileResponse:
+      type: object
+      properties:
+        filename:
+          type: string
+        filecontent:
+          type: string
+        mimeType:
+          type: string
+
+    VirtualFolderActiveResponse:
+      type: object
+      properties:
+        active:
+          type: boolean
+
+    EnableDisableVirtualFolderResponse:
+      type: object
+      properties:
+        result:
+          type: boolean
+
+    CreateDirectoryResponse:
+      type: object
+      properties:
+        result:
+          type: boolean
+
+    DeleteDirectoryResponse:
+      type: object
+      properties:
+        result:
+          type: boolean
+
+    AddFileResponse:
+      type: object
+      properties:
+        result:
+          type: boolean
+
+    DeleteFileResponse:
+      type: object
+      properties:
+        result:
+          type: boolean
